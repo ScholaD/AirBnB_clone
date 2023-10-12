@@ -37,7 +37,7 @@ class BaseModel:
         created_at and updated_at attributes to ISO format strings """
 
         obj_dict = self.__dict__.copy()
-        obj_dict['__class__'] = self.__class__.__name
+        obj_dict['__class__'] = self.__class__.__name__
         obj_dict['created_at'] = self.created_at.isoformat()
         obj_dict['updated_at'] = self.updated_at.isoformat()
         return obj_dict
