@@ -23,9 +23,77 @@ class HBNBCommand(cmd.Cmd):
             "Place", "Review"
             ]
 
-    def do_mytest_(self, line):
-        Samp = storage.all()
-        print(Samp)
+    @classmethod
+    def handleArg(cls, self, cmd_cls, arg_):
+        """
+        this method is to be called by 'parseline'
+        It handles the case whereby the command has an argument
+        exanample: BaseModel.show("1234-1234-12334")
+        """
+        sep = ['"', "'"]
+        arg = arg_.split(',')
+        if arg[0][0] not in sep or arg[0][-1]\
+                not in sep or arg[0][0] != arg[0][-1]:
+            return 'continue_'
+        if len(arg) == 1:
+            result = cmd.Cmd.parseline(self, f"{cmd_cls} {arg_[1:-1]}")
+            return result
+        else:
+            id_ = arg[0]
+            arg[1] = arg[1].strip()
+            arg[-1] = arg[-1].strip()
+            if arg[1][0] == '{' or arg[-1][-1] == '}':
+                arg[1] = arg[1][1:]
+                arg[-1] = arg[-1][:-1]
+                try:
+                    start = len(id_)
+                    dict_ = eval(arg_[start:])
+                except Exception:
+                    return 'continue_'
+                for i, j in dict_:
+                    HBNBCommand.handleArg(
+                            cls, self, cmd_cls, f'{id_}, {i}, {j}')
+            else:
+                if arg[0][0] not in sep or arg[0][-1] not in sep or\
+                        arg[0][0] != arg[0][-1]:
+                    return 'continue_'
+                id_ = arg[0][1:-1]
+                if(len(arg) > 1):
+                    if len(arg) != 3:
+                        return 'continue_'
+                    else:
+                        arg[1] = arg[1].strip()
+                        if arg[1][0] not in sep or arg[1][-1] not in sep or\
+                                arg[1][0] != arg[1][-1]:
+                            return 'continue_'
+                        arg[1] = arg[1][1:-1]
+                        narg = ' '.join(arg[1:])
+                        result = cmd.Cmd.parseline(
+                                self, f"{cmd_cls} {id_} {narg}")
+                        return result
+
+    def parseline(self, line):
+        """
+        doc
+        """
+        lists = line.split('.')
+        if any(_ == lists[0] for _ in HBNBCommand.__available_class
+               ) and len(lists) == 2:
+            cls = lists[0]
+            nlists = lists[1]
+            if '(' in nlists and nlists[-1] == ')':
+                temp = nlists.split('(')
+                if temp[0] != '':
+                    command = temp[0]
+                    arg = temp[1][:-1]
+                    if arg != '':
+                        result = HBNBCommand.handleArg(
+                                self, f"{command} {cls}", arg)
+                        if result != 'continue_':
+                            return result
+                    line = f"{command} {cls} {arg}"
+        result = cmd.Cmd.parseline(self, line)
+        return result
 
     def do_quit(self, line):
         """
@@ -64,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif lines[0] not in HBNBCommand.__available_class:
             print("** class doesn't exist **")
-        elif len(lines) != 2:
+        elif len(lines) < 2:
             print("** instance id missing **")
         else:
             obj_a = storage.all()
@@ -74,6 +142,25 @@ class HBNBCommand(cmd.Cmd):
                     print(obj_a[a])
             if flag == 0:
                 print("** no instance found **")
+
+    def do_count(self, line):
+        """
+        Prints the amount o instance of a paticular class
+        Example: $count BaseModel
+        """
+        flag = 0
+        count = 0
+        lines = line.split()
+        if not line:
+            print("** class name missing **")
+        elif lines[0] not in HBNBCommand.__available_class:
+            print("** class doesn't exist **")
+        else:
+            obj_a = storage.all()
+            for a in obj_a.keys():
+                if "{}".format(lines[0]) == a[:len(lines[0])]:
+                    count += 1
+        print(f"{count}")
 
     def do_destroy(self, line):
         """
@@ -166,9 +253,12 @@ class HBNBCommand(cmd.Cmd):
                     else:
                         obj_c = obj_a[a]
                         if lines[2] not in ['id', 'created_at', 'updated_at']:
-                            if lines[3][0] == '"' and lines[3][-1] == '"':
-                                setattr(obj_c, lines[2], lines[3][1:-1])
+                            try:
+                                val = eval(lines[3])
+                                setattr(obj_c, lines[2], val)
                                 storage.save()
+                            except Exception:
+                                pass
                         break
             if flag == 0:
                 print("** no instance found **")
