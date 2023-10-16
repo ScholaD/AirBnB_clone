@@ -13,17 +13,18 @@ from models.review import Review
 class FileStorage:
     """ construct """
 
-    __file_path = "file.json"
-    __objects = {}
+    def __init__(self):
+        self.__file_path = "file.json"
+        self.__objects = {}
 
     def all(self):
         """ return dictionary objects """
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
         """Set in __objects obj with key <obj_class_name>.id"""
         newname = obj.__class__.__name__
-        FileStorage.__objects["{}.{}".format(newname, obj.id)] = obj
+        self.__objects["{}.{}".format(newname, obj.id)] = obj
 
     def save(self):
         """ serializes objectss to the JSON file """
