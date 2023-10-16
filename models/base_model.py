@@ -12,9 +12,6 @@ class BaseModel:
         """ Constructor that initializes a new instance of BaseModel """
 
         dformat = "%Y-%m-%dT%H:%M:%S.%f"
-        self.id = str(uuid4())
-        self.created_at = datetime.today()
-        self.updated_at = datetime.today()
         if kwargs:
             for key, value in kwargs.items():
                 if key == '__class__':
@@ -23,14 +20,18 @@ class BaseModel:
                     setattr(self, key, datetime.strptime(value, dformat))
                 else:
                     self.__dict__[key] = value
+
         else:
+            self.id = str(uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
             models.storage.new(self)
 
     def save(self):
         """  updates the updated_at
         attribute with the current datetime when called. """
 
-        self.updated_at = datetime.today()
+        self.updated_at = datetime.now()
         models.storage.save()
 
     def to_dict(self):
@@ -49,11 +50,3 @@ class BaseModel:
         object in the desired format. """
         hello = self.__class__.__name__
         return "[{}] ({}) {}".format(hello, self.id, self.__dict__)
-
-    def __str__(self):
-        """
-        Return string reprsentation of the object in the desired format.
-        """
-
-        return "[{}] ({}) {}".format(
-                self.__class__.__name__, self.id, self.__dict__)
