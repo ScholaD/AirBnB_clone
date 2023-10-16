@@ -36,15 +36,6 @@ class FileStorage:
             json.dump(transformed, f)
 
     def reload(self):
-        """Deserializes data from a
-        JSON file into __objects if the file exists."""
-        for key in self.__objects:
-            object_details = self.__objects[key].to_dict()
-            transformed[key] = object_details
-        with open(self.__file_path, mode="w") as f:
-            json.dump(transformed, f)
-
-    def reload(self):
         """
         Deserializes data from a JSON file into __objects if the file exists.
         """
