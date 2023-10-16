@@ -1,13 +1,6 @@
 #!/usr/bin/python3
 """Defines the FileStorage class."""
 import json
-from models.base_model import BaseModel
-#from models.user import User
-#from models.state import State
-#from models.city import City
-#from models.place import Place
-#from models.amenity import Amenity
-#from models.review import Review
 
 
 class FileStorage:
@@ -36,17 +29,29 @@ class FileStorage:
 		"""
 		Deserializes data from a JSON file into __objects if the file exists.
 		"""
+		from models.user import User
+		from models.city import City
+		from models.place import Place
+		from models.state import State
+		from models.review import Review
+		from models.amenity import Amenity
 		from models.base_model import BaseModel
-		clas = {
-			"BaseModel": BaseModel
-			}
+
+		cls_mapp = {
+				"Place": Place,
+				"State": State,
+				"Review": Review,
+				"Amenity": Amenity,
+				"BaseModel": BaseModel,
+				"User": User, "City": City
+		}
 
 		try:
 			with open(FileStorage.__file_path, mode="r") as f:
 				dict_readed = json.load(f)
-				for key, values in dict_readed.items():
-					class_name = clas['__class__']
-					real_clas = clas[class_name]
+				for values in dict_readed.values():
+					class_name = values['__class__']
+					real_class = cls_mapp[class_name]
 					self.new(real_class(**values))
 		except FileNotFoundError:
 			return

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """So This Defines the BaseModel class."""
-import models
+from models import storage
 from uuid import uuid4
 from datetime import datetime
 
@@ -17,21 +17,20 @@ class BaseModel:
                 if key == "created_at" or key == "updated_at":
                     setattr(self, key, datetime.strptime(value, dformat))
                 else:
-                    self.__dict__[key] = value
                     setattr(self, key, value)
 
         else:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            models.storage.new(self)
+            storage.new(self)
 
     def save(self):
         """  updates the updated_at
         attribute with the current datetime when called. """
 
         self.updated_at = datetime.today()
-        models.storage.save()
+        storage.save()
 
     def to_dict(self):
         """  returns a dictionary representation of the object
