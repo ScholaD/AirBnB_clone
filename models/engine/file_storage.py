@@ -52,6 +52,7 @@ class FileStorage:
         try:
             with open(self.__file_path, mode="r") as f:
                 dict_readed = json.load(f)
+                readed = json.load(f)
             for key, dict_readed in readed.items():
                 class_name = dict_readed['__class__']
                 new_object = eval(class_name)(**dict_readed)

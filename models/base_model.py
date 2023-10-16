@@ -9,8 +9,7 @@ class BaseModel:
     """construct"""
 
     def __init__(self, *args, **kwargs):
-        """ Constructor that initializes a
-        new instance of BaseModel """
+        """ Constructor that initializes a new instance of BaseModel """
 
         dformat = "%Y-%m-%dT%H:%M:%S.%f"
         self.id = str(uuid4())
@@ -30,9 +29,6 @@ class BaseModel:
     def save(self):
         """  updates the updated_at
         attribute with the current datetime when called. """
-        """
-        updates the updated_at attribute with the current datetime when called.
-        """
 
         self.updated_at = datetime.today()
         models.storage.save()
