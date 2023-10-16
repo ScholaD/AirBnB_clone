@@ -12,7 +12,10 @@ from models.review import Review
 
 class FileStorage:
     """ construct """
+<<<<<<< HEAD
 
+=======
+>>>>>>> f09c4c0cbbdced4b99872896e6d6b30adae666c8
     __file_path = "file.json"
     __objects = {}
 
@@ -28,6 +31,7 @@ class FileStorage:
     def save(self):
         """ serializes objectss to the JSON file """
         transformed = {}
+<<<<<<< HEAD
         for key in FileStorage.__objects:
             object_details = FileStorage.__objects[key].to_dict()
             transformed[key] = object_details
@@ -37,6 +41,18 @@ class FileStorage:
     def reload(self):
         """Deserializes data from a
         JSON file into __objects if the file exists."""
+=======
+        for key in self.__objects:
+            object_details = self.__objects[key].to_dict()
+            transformed[key] = object_details
+        with open(self.__file_path, mode="w") as f:
+            json.dump(transformed, f)
+
+    def reload(self):
+        """
+        Deserializes data from a JSON file into __objects if the file exists.
+        """
+>>>>>>> f09c4c0cbbdced4b99872896e6d6b30adae666c8
 
         try:
             with open(FileStorage.__file_path, mode="r") as f:

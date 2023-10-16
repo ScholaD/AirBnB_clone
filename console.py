@@ -3,6 +3,7 @@
 doc
 """
 import cmd
+import sys
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -265,4 +266,7 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == "__main__":
-    HBNBCommand().cmdloop()
+    if len(sys.argv) > 1:
+        HBNBCommand().onecmd(' '.join(sys.argv[1:]))
+    else:
+        HBNBCommand().cmdloop()
