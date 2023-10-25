@@ -1,56 +1,61 @@
-.filters{
-    background-color: white;
+.filters {
+    background-color: #FFFFFF;
     height: 70px;
     width: 100%;
     border: 1px solid #DDDDDD;
     border-radius: 4px;
-
+    text-align: right;
+    display: flex;
+    justify-content: flex-start;
 }
 
-.filters button {
-    font-size: 18px;
-    background-color:  #FF5A5F;
-    color: #FFFFFF;
-    height: 48px;
-    width: 20%;
-    border: none;
-    border-radius: 4px;
-    margin: 11px 30px ;
-    float: right;
-}
-
-.filters button:hover {
+button:hover {
     opacity: 0.9;
-}
-
-.h3 {
-    margin-bottom: 0;
-    margin-left: 15%;
-    text-align: left;
-    font-weight: 600;
-}
-
-.h4 {
-    margin-top: 0;
-    margin-left: 15%;
-    text-align: left;
-    font-size: 14px;
-    font-weight: 400;
-
 }
 
 .locations {
     height: 100%;
     width: 25%;
     border-right: 1px solid #DDDDDD;
-    margin-right: 0;
-    
+    order: 0;
+    text-align: left;
+    margin-left: 40px;
+    position: relative;
 }
 
 .amenities {
     height: 100%;
     width: 25%;
-    margin-right: auto;
+    order: 1;
+    text-align: left;
+    margin-left: 40px;
+}
+
+button {
+    font-size: 18px;
+    background-color: #FF5A4F;
+    color: #FFFFFF;
+    height: 48px;
+    width: 20%;
+    border-radius: 4px;
+    border-style: none;
+    margin-top: 10px;
+    margin-right: 30px;
+    margin-left: auto;
+    order: 2;
+}
+
+.amenities h3,
+.locations h3 {
+    font-weight: 600;
+    margin: 12px 0;
+}
+
+.amenities h4,
+.locations h4 {
+    font-weight: 400;
+    font-size: 12px;
+    margin: 0 auto;
 }
 
 .popover {
